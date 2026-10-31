@@ -1,0 +1,60 @@
+/* ChatForge vote focus HUD. Completely independent of the legacy map CSS. */
+.cf-focus[hidden] { display: none !important; }
+.cf-focus, .cf-focus * { box-sizing: border-box; }
+.cf-focus {
+  position: fixed;
+  z-index: 9999;
+  left: 50%; bottom: clamp(15px, 3.2vh, 46px);
+  transform: translateX(-50%);
+  width: min(980px, calc(100vw - 36px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: clamp(14px, 1.6vw, 23px);
+  color: #f9f2e6;
+  background: rgba(16, 11, 25, .97);
+  border: 2px solid #d9a64b;
+  border-radius: 16px;
+  box-shadow: 0 0 0 5px rgba(8, 5, 17, .76), 0 16px 55px rgba(0, 0, 0, .75), 0 0 32px rgba(242, 159, 56, .18);
+  font: 600 16px/1.35 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  text-align: left;
+  pointer-events: none; /* No fake voting buttons; Twitch chat is the input. */
+}
+.cf-focus__header { display: flex; gap: 12px; justify-content: space-between; align-items: center; }
+.cf-focus__badge { color: #ffcb69; font-weight: 900; font-size: clamp(12px, 1.1vw, 17px); letter-spacing: .12em; }
+.cf-focus__timer { background: #f5b947; border-radius: 8px; color: #1c1423; padding: 4px 12px; font-weight: 900; font-size: clamp(18px, 2vw, 28px); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cf-focus__timer--urgent { background: #ed5c54; color: #fff; }
+.cf-focus__title { font-size: clamp(22px, 2.6vw, 35px); font-weight: 900; line-height: 1.16; color: #fff7ec; margin: 8px 0 4px; }
+.cf-focus__subtitle { margin: 0 0 14px; font-weight: 500; font-size: clamp(14px, 1.2vw, 18px); color: #ded3e6; }
+.cf-focus__options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cf-focus__option { min-width: 0; border: 2px solid #9d7bdd; background: #21192e; border-radius: 11px; padding: 13px; }
+.cf-focus__option--2 { border-color: #dca84c; background: #2a211c; }
+.cf-focus__option--winner { border-color: #58d4a0; box-shadow: inset 0 0 0 1px rgba(88, 212, 160, .5); }
+.cf-focus__option-head { display: flex; gap: 10px; align-items: center; margin-bottom: 9px; }
+.cf-focus__number { width: 38px; height: 38px; border-radius: 8px; display: grid; place-items: center; background: #ac8fef; color: #120d18; font-size: 26px; font-weight: 950; }
+.cf-focus__option--2 .cf-focus__number { background: #efb855; }
+.cf-focus__command { display: inline-block; padding: 5px 10px; border-radius: 6px; background: rgba(255,255,255,.12); font-size: clamp(19px, 1.7vw, 25px); letter-spacing: .02em; color: #fff; }
+.cf-focus__choice { min-height: 3em; color: #fff4e5; overflow-wrap: anywhere; font-size: clamp(15px, 1.25vw, 19px); font-weight: 700; }
+.cf-focus__bar { background: rgba(255,255,255,.12); height: 8px; border-radius: 8px; overflow: hidden; margin-top: 10px; }
+.cf-focus__bar-fill { height: 100%; width: 0; background: #ac8fef; transition: width .18s ease; }
+.cf-focus__option--2 .cf-focus__bar-fill { background: #efb855; }
+.cf-focus__tally { margin-top: 5px; color: #d8cfe0; font-size: 14px; font-variant-numeric: tabular-nums; }
+.cf-focus__footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 7px 16px; margin-top: 14px; border-top: 1px solid rgba(241, 195, 105, .25); padding-top: 12px; }
+.cf-focus__instruction { font-size: clamp(13px, 1.25vw, 18px); color: #ffcb69; font-weight: 900; letter-spacing: .03em; overflow-wrap: anywhere; }
+.cf-focus__rule { color: #d4c9d9; font-size: 13px; font-weight: 500; }
+.cf-focus--result { border-color: #56cfa3; }
+.cf-focus--result .cf-focus__badge { color: #66e1b0; }
+.cf-focus--result .cf-focus__timer { background: #63d6a6; }
+.cf-focus--result .cf-focus__instruction { color: #9cf0cc; }
+@media (max-width: 650px) {
+  .cf-focus { width: calc(100vw - 18px); bottom: 9px; padding: 10px; border-radius: 10px; }
+  .cf-focus__options { gap: 7px; }
+  .cf-focus__option { padding: 8px; }
+  .cf-focus__number { width: 27px; height: 27px; font-size: 18px; }
+  .cf-focus__option-head { gap: 4px; }
+  .cf-focus__command { padding: 3px 5px; font-size: 15px; }
+  .cf-focus__choice { font-size: 13px; }
+  .cf-focus__tally { font-size: 12px; }
+  .cf-focus__footer { margin-top: 7px; padding-top: 7px; }
+  .cf-focus__rule { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .cf-focus__bar-fill { transition: none; } }

@@ -1,0 +1,30 @@
+const query = new URLSearchParams(location.search);
+if (query.has('transparent')) document.body.classList.add('transparent');
+document.querySelector('#mode').textContent = query.has('demo') ? 'DEMO SIMULAT' : 'LUME LIVE';
+const icons = { npc: '♟', item: '✦', event: '✧', danger: 'ϟ' };
+const labels = { npc: 'PERSONAJ', item: 'OBIECT', event: 'EVENIMENT', danger: 'PERICOL' };
+function node(tag, text, cls) { const el = document.createElement(tag); el.textContent = text; if (cls) el.className = cls; return el; }
+function render(state) {
+  document.querySelector('#revision').textContent = String(state.revision).padStart(2, '0');
+  const markers = document.querySelector('#markers'); markers.replaceChildren();
+  for (const entity of state.entities) {
+    const marker = node('div', '', 'marker ' + entity.type); marker.style.left = entity.x + '%'; marker.style.top = entity.y + '%';
+    marker.append(node('b', icons[entity.type]), node('span', entity.name)); markers.append(marker);
+  }
+  const latest = state.entities.at(-1);
+  if (latest) {
+    const card = document.querySelector('#latest'); card.replaceChildren(node('span', labels[latest.type], 'badge ' + latest.type), node('h2', latest.name), node('p', latest.description));
+    if (latest.stats) for (const [key, value] of Object.entries(latest.stats)) card.append(node('span', key + ': ' + value, 'stat'));
+  }
+  const history = document.querySelector('#history'); history.replaceChildren(...state.history.slice().reverse().map(text => node('li', text)));
+}
+let retry;
+function connect() {
+  const socket = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host);
+  const status = document.querySelector('#connection');
+  socket.onopen = () => { status.textContent = '● CONECTAT'; status.className = 'online'; };
+  socket.onmessage = event => { try { const msg = JSON.parse(event.data); if (msg.kind === 'world.snapshot') render(msg.state); } catch { status.textContent = 'Date indisponibile'; } };
+  socket.onclose = () => { status.textContent = '○ RECONECTARE'; clearTimeout(retry); retry = setTimeout(connect, 1500); };
+  socket.onerror = () => socket.close();
+}
+connect();

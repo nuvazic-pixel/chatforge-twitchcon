@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ChatForge — Chat ignites the forge</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="global-chaos"><label for="chaos-level" id="chaos-label">CHAOS 0 / 100</label><progress id="chaos-level" max="100" value="0" aria-labelledby="chaos-label"></progress></div>
+
+<!-- Definiții SVG reutilizate (siluete, pictograme, gradiente) -->
+<svg class="defs" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="g-forge">
+      <stop offset="0" stop-color="#ffd27a" stop-opacity=".95"/>
+      <stop offset=".45" stop-color="#ff8a3d" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="g-flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ffe29a"/>
+    </linearGradient>
+    <symbol id="tree" viewBox="2 28 44 66"><path d="M24 30 L35 52 H29 L40 74 H31 L44 92 H4 L17 74 H8 L19 52 H13Z"/></symbol>
+    <symbol id="i-npc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20.5c.7-4.2 3.4-6.5 7-6.5s6.3 2.3 7 6.5"/></g></symbol>
+    <symbol id="i-item" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 19 9l-7 12.5L5 9Z"/><path d="M5 9h14M9.6 9 12 2.5 14.4 9 12 21.5Z"/></g></symbol>
+    <symbol id="i-event" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 14.2 9.8 21.5 12 14.2 14.2 12 21.5 9.8 14.2 2.5 12 9.8 9.8Z"/></g></symbol>
+    <symbol id="i-danger" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 2.5 5.5 13.5H11L10 21.5l8.5-12H13Z"/></g></symbol>
+  </defs>
+</svg>
+
+<div class="backdrop" aria-hidden="true"><div class="vignette"></div></div>
+
+<main class="stage">
+  <header class="top">
+    <div class="title-block">
+      <svg class="logo" viewBox="0 0 60 64" aria-hidden="true">
+        <path d="M30 4C36 15 45 19 41 31 39 37 35 40 30 40 24 40 20 36 21 29 22 24 26 22 27 16 28 12 29 8 30 4Z" fill="url(#g-flame)"/>
+        <path d="M11 47H49L45 52H38V56H43V60H17V56H22V52H15Z" fill="none" stroke="#f2c25b" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <p class="eyebrow">ChatForge · Chapter I · Valley of Echoes</p>
+        <h1>Chat writes the legend.</h1>
+      </div>
+    </div>
+    <div class="status-block">
+      <div class="counter"><strong id="revision">00</strong><span>CREATIONS</span></div>
+      <div class="chips">
+        <span id="connection" class="chip conn wait" role="status">Connecting</span>
+        <span id="mode" class="chip mode"></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="map" id="map" aria-label="World map">
+      <img class="map-landscape" src="/assets/vale-realista-v2.png" width="1672" height="941" fetchpriority="high" alt="Fantasy valley with forests, a medieval town, a citadel, ruins, a river and a harbor" draggable="false">
+      <div class="map-atmosphere" aria-hidden="true"></div>
+      <div class="landmark forest" data-map-x="12" data-map-y="38" style="left:12%;top:38%"><span>Ancient Forest</span></div>
+      <div class="landmark village forge" id="forge" data-map-x="22" data-map-y="47" style="left:22%;top:47%"><span>Echo Town</span><i class="forge-glow" aria-hidden="true"></i></div>
+      <div class="landmark citadel" data-map-x="54" data-map-y="22" style="left:54%;top:22%"><span>Citadel</span></div>
+      <div class="landmark ruins" data-map-x="83" data-map-y="10" style="left:83%;top:10%"><span>Tower Ruins</span></div>
+      <div class="landmark valley" data-map-x="43" data-map-y="72" style="left:43%;top:72%"><span>River Valley</span></div>
+      <div class="landmark port" data-map-x="76" data-map-y="61" style="left:76%;top:61%"><span>Harbor</span></div>
+      <div id="effects"></div><div id="cinematic" class="cinematic" role="status" hidden></div><section id="summary" class="world-summary" aria-label="World summary" hidden></section>
+      <div id="markers"></div>
+      <canvas id="fx" aria-hidden="true"></canvas>
+
+      <div class="frame" aria-hidden="true"></div>
+      <div class="compass" aria-hidden="true">N<i></i></div>
+      <div class="map-label">
+        <b>Valley of Echoes</b>
+        <em>Chat ignites the forge and builds the world.</em>
+      </div>
+      <div class="legend" id="legend" aria-label="Creation types"></div>
+    </section>
+
+    <aside>
+      <section id="forge-feedback" class="forge-feedback" aria-live="polite"><p class="eyebrow">YOUR IDEA → THE WORLD</p><p>Type <b>!forge robots</b> or <b>!forge a magic sword</b> in Twitch chat.</p><small>One idea per message · Wait 5 seconds · Streamer approves before it appears.</small><ol id="forge-messages"></ol></section>
+      <section id="cooperative" class="coop-panel" aria-label="Save the Valley of Echoes"></section>
+      <section class="card" id="latest" aria-live="polite"></section>
+      <section class="timeline" aria-label="Timeline">
+        <p class="eyebrow">Story so far</p>
+        <ol id="history"></ol>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <p class="cta"><span class="cta-rune" aria-hidden="true">ᚠ</span>Type <code>!forge robots</code> in chat and shape the world</p>
+    <button id="summary-toggle" type="button" aria-expanded="false">World summary ↗</button><p class="cmds">Any idea · English or Romanian · One per message</p>
+  </footer>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ChatForge — Director’s Cut</title><link rel="stylesheet" href="/director.css"></head>
+<body><main>
+<header><div class="brand">✦ CHATFORGE <span>DIRECTOR’S CUT</span></div><a id="overlay-link" href="/overlay" target="_blank" rel="noreferrer">Open overlay ↗</a></header>
+<section class="intro"><div><p class="eyebrow">YOU BRING THE STORY TO LIFE</p><h1>Chat proposes.<br>You decide what stays.</h1><p>Review creations before they appear on stream.</p></div><div class="metrics"><div><strong id="count">0</strong><span>PENDING</span></div><div><strong id="revision">0</strong><span>ON THE MAP · TOTAL</span></div></div></section>
+<div class="status-row"><span id="connection" role="status">Connecting to the engine…</span><span>Only approved creations enter the world</span></div>
+<p id="error" role="alert" hidden></p>
+<div class="workspace">
+<section class="inbox"><div class="section-title"><h2>Chat proposals</h2><span>01 / REVIEW</span></div><div id="queue"></div></section>
+<section class="editor"><div class="section-title"><h2>At the workbench</h2><span>02 / DECISION</span></div>
+<div id="empty"><div class="empty-rune">ᚠ</div><h3>The forge awaits an idea.</h3><p>Validated proposals appear here. Send a <code>!forge</code> command in chat, for example: !forge robots. One idea per message. Approve below to publish it on the map.</p></div>
+<form id="editor" hidden><div id="source"></div><div class="fields"><label>Type<select id="type"><option value="npc">Character</option><option value="item">Item</option><option value="event">Event</option><option value="danger">Danger</option></select></label><label>Creation name<input id="name" required minlength="2" maxlength="80"></label></div>
+<label>Description<textarea id="description" required maxlength="200" rows="3"></textarea></label>
+<label>World impact<textarea id="impact" required maxlength="200" rows="3"></textarea></label>
+<label>Stats <span class="optional">optional · numeric JSON</span><textarea id="stats" rows="2" placeholder='{"power":10}' spellcheck="false"></textarea></label>
+<p class="hint">The original author is preserved. Edits are validated before publication.</p>
+<div class="actions"><button id="reject" class="reject" type="button">Reject</button><button id="approve" type="submit">Approve and send to map ↗</button></div>
+</form></section>
+</div><p id="notice" class="notice" role="status" aria-live="polite"></p>
+<footer>CHATFORGE / CREATIVE CONTROL <span>The queue lasts only while the server is running.</span></footer>
+</main><script src="/director.js"></script></body></html>
+
