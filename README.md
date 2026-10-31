@@ -8,22 +8,22 @@ Built for the **Codex x TwitchCon Hackathon (2026)**.
 
 ## Watch the loop
 
-1. **Create** — a viewer sends \`!forge robots\` or \`!forge item a magic sword\` in Twitch chat.
+1. **Create** — a viewer sends `!forge robots` or `!forge item a magic sword` in Twitch chat.
 2. **Moderate** — the AI generates a structured proposal. The streamer reviews, edits if needed, and approves it in the private Director panel.
 3. **Publish** — the approved entity materializes on the fantasy map; the contributor earns **10 points**.
-4. **Crisis** — an approved \`event\` with two resolutions opens a vote immediately. Alternatively, three approved non-event creations during a build phase trigger an AI-planned crisis (with a local fallback).
-5. **Vote** — viewers type \`!vote 1\` or \`!vote 2\` in Twitch chat. A prominent overlay HUD displays the two choices, live totals, and remaining time.
+4. **Crisis** — an approved `event` with two resolutions opens a vote immediately. Alternatively, three approved non-event creations during a build phase trigger an AI-planned crisis (with a local fallback).
+5. **Vote** — viewers type `!vote 1` or `!vote 2` in Twitch chat. A prominent overlay HUD displays the two choices, live totals, and remaining time.
 6. **Resolve** — the vote outcome updates Chaos, appears on the overlay, and leads into the next round. The world summary identifies **🏆 Arhitectul Văii**, the highest-scoring contributor.
 
 Only the **first valid vote per Twitch user ID per round** counts.
 
 ## What judges can see
 
-- **Real Twitch integration:** Twitch EventSub WebSocket subscription to \`channel.chat.message\`.
+- **Real Twitch integration:** Twitch EventSub WebSocket subscription to `channel.chat.message`.
 - **AI-assisted worldbuilding:** OpenAI Responses API with structured output; server-side Zod normalization and validation.
 - **Streamer-controlled moderation:** proposals remain off-map until explicitly approved; edits are revalidated.
 - **Deterministic game state:** reducer-backed map, contributor scores, Chaos, voting, and predictable round transitions.
-- **Readable OBS experience:** dark/gold fantasy map, clear voting overlay, live counts, a public world summary, and \`?transparent=1\` mode.
+- **Readable OBS experience:** dark/gold fantasy map, clear voting overlay, live counts, a public world summary, and `?transparent=1` mode.
 - **Testable without live credentials:** local fixture and Director demo modes.
 
 ### Game rules
@@ -31,7 +31,7 @@ Only the **first valid vote per Twitch user ID per round** counts.
 | Mechanic | Behavior |
 | --- | --- |
 | Starting Chaos | 0 / 100 |
-| Approved \`event\` | Chaos +30 (capped at 100) |
+| Approved `event` | Chaos +30 (capped at 100) |
 | Crisis trigger | Approved event with two resolutions, or three approved non-event creations in a build phase |
 | Voting | 60 seconds; one counted vote per Twitch user per round |
 | Winning option | Chaos −25 (floored at 0) |
@@ -44,7 +44,7 @@ At Chaos 100, the game announces the valley's fall and resets Chaos for the next
 
 ## How it works
 
-\`\`\`text
+```text
 Twitch chat (!forge / !vote)
   │
   ▼
@@ -69,92 +69,92 @@ Twitch EventSub (WebSocket)
                               │
                               ▼
                   Browser overlay / OBS Browser Source
-\`\`\`
+```
 
-**Stack:** Node.js 22+, TypeScript, \`tsx\`, \`ws\`, Zod, OpenAI SDK, and vanilla HTML/CSS/JavaScript for the viewer overlay and Director panel. The current overlay is **not** a React/Vite application.
+**Stack:** Node.js 22+, TypeScript, `tsx`, `ws`, Zod, OpenAI SDK, and vanilla HTML/CSS/JavaScript for the viewer overlay and Director panel. The current overlay is **not** a React/Vite application.
 
 ## Run locally
 
 ### Prerequisites
 
 - Node.js **22 or newer** and npm
-- For live mode: a Twitch developer application, a Twitch **User Access Token** with \`user:read:chat\`, and an OpenAI API key
+- For live mode: a Twitch developer application, a Twitch **User Access Token** with `user:read:chat`, and an OpenAI API key
 - For OBS: OBS Studio with a Browser Source (optional for browser-only testing)
 
 ### Demo without Twitch or API credentials
 
-\`\`\`powershell
+```powershell
 npm ci
 npm run demo:director
-\`\`\`
+```
 
 Open the **private Director link** printed in the terminal. The demo provides simulated proposals so you can review and approve them without live accounts. Open the overlay link shown by the server in another browser tab.
 
 Other scripts:
 
-\`\`\`powershell
+```powershell
 npm run demo:visual    # Visual map demo; simulated, no streamer moderation
 npm run demo           # Console fixture
 npm run check          # TypeScript typecheck
 npm test               # Automated Node tests
-\`\`\`
+```
 
-The project has a \`start\` script, **not** an \`npm run dev\` script. Demo and live servers use the same default port, so stop one before starting another.
+The project has a `start` script, **not** an `npm run dev` script. Demo and live servers use the same default port, so stop one before starting another.
 
 ### Live Twitch mode
 
 1. Register or reuse an application in the [Twitch Developer Console](https://dev.twitch.tv/console/apps).
-2. Authorize the Twitch account with a **User Access Token** containing \`user:read:chat\`, issued for the same Twitch Client ID.
+2. Authorize the Twitch account with a **User Access Token** containing `user:read:chat`, issued for the same Twitch Client ID.
 3. Copy the example configuration:
 
-   \`\`\`powershell
+   ```powershell
    Copy-Item .env.example .env
-   \`\`\`
+   ```
 
-4. Fill out \`.env\` **locally**:
+4. Fill out `.env` **locally**:
 
-   \`\`\`dotenv
+   ```dotenv
    OPENAI_API_KEY=
    OPENAI_MODEL=gpt-4o-mini
    TWITCH_CLIENT_ID=
    TWITCH_ACCESS_TOKEN=
    TWITCH_BROADCASTER_ID=
-   \`\`\`
+   ```
 
-   \`TWITCH_BROADCASTER_ID\` is the **numeric ID** of the channel to monitor; the chatting account's user ID comes from the token. Never commit or share \`.env\`.
+   `TWITCH_BROADCASTER_ID` is the **numeric ID** of the channel to monitor; the chatting account's user ID comes from the token. Never commit or share `.env`.
 
 5. Start:
 
-   \`\`\`powershell
+   ```powershell
    npm ci
    npm run check
    npm test
    npm start
-   \`\`\`
+   ```
 
-6. Open the local Director link printed in the terminal; keep it private. Open the viewer overlay at \`http://127.0.0.1:4173/\`. In Twitch chat, try:
+6. Open the local Director link printed in the terminal; keep it private. Open the viewer overlay at `http://127.0.0.1:4173/`. In Twitch chat, try:
 
-   \`\`\`text
+   ```text
    !forge robots
    !forge item a lantern that reveals lies
    !forge event A dragon threatens Echo Town. Defend the citadel or evacuate through the forest.
-   \`\`\`
+   ```
 
-7. Approve the crisis in Director, then cast \`!vote 1\` or \`!vote 2\` **after the vote opens**.
+7. Approve the crisis in Director, then cast `!vote 1` or `!vote 2` **after the vote opens**.
 
-A \`!forge\` command accepts a natural-language idea in English or Romanian, up to 500 characters. A five-second per-user cooldown applies. Generated in-world text is requested in English. AI proposals may take time to appear because the parsing pipeline is queued and the Director panel polls approximately every 1.5 seconds.
+A `!forge` command accepts a natural-language idea in English or Romanian, up to 500 characters. A five-second per-user cooldown applies. Generated in-world text is requested in English. AI proposals may take time to appear because the parsing pipeline is queued and the Director panel polls approximately every 1.5 seconds.
 
 **OAuth note:** the current live implementation validates the Twitch access token at startup and periodically, but does **not** refresh it automatically. An expired or revoked token requires reauthorization and a restart.
 
 ## OBS overlay
 
-- Viewer: \`http://127.0.0.1:4173/overlay\`
-- Transparent page: \`http://127.0.0.1:4173/overlay?transparent=1\`
+- Viewer: `http://127.0.0.1:4173/overlay`
+- Transparent page: `http://127.0.0.1:4173/overlay?transparent=1`
 - Suggested Browser Source canvas: **1920 × 1080** (also check 1280 × 720).
 
-The transparent mode removes the **page background**; the map's artwork remains visible. Reload the OBS Browser Source after restarting the server. The overlay, Director panel, and server are intended to run **on the same machine** using the loopback address \`127.0.0.1\`.
+The transparent mode removes the **page background**; the map's artwork remains visible. Reload the OBS Browser Source after restarting the server. The overlay, Director panel, and server are intended to run **on the same machine** using the loopback address `127.0.0.1`.
 
-**Voting UI:** while the cooperative state is in \`vote\`, a prominent two-choice HUD displays the server's vote deadline and totals. During \`result\`, it displays the outcome. There are **no clickable viewer voting buttons**; votes are cast through Twitch chat.
+**Voting UI:** while the cooperative state is in `vote`, a prominent two-choice HUD displays the server's vote deadline and totals. During `result`, it displays the outcome. There are **no clickable viewer voting buttons**; votes are cast through Twitch chat.
 
 ## Moderation, security, and reliability
 
@@ -172,17 +172,17 @@ The AI prompt is not a substitute for moderation. The streamer has the final dec
 
 ## Verification
 
-\`\`\`powershell
+```powershell
 npm run check
 npm test
 node --check public/app.js
 node --check public/vote-focus.js
 node --check public/director.js
-\`\`\`
+```
 
 The project was locally validated on Windows with **27 passing automated tests** for the v1.1 voting UI checkpoint. Those tests cover the reducer, parsing, moderation, EventSub-adjacent processing, voting rules, snapshot delivery/reconnection, overlay resource serving, and startup behavior. Live Twitch/OBS behavior should additionally be tested by the presenter.
 
-Checkpoint tag: \`chatforge-twitchcon-demo-v1.1\`.
+Checkpoint tag: `chatforge-twitchcon-demo-v1.1`.
 
 ## How Codex was used
 
