@@ -1,8 +1,0 @@
-<!doctype html>
-<html lang="ro"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ChatForge — Lumea construită de chat</title><link rel="stylesheet" href="/style.css">
-<body><main><header><div class="brand">✦ CHATFORGE <span>O LUME. O COMUNITATE.</span></div><div id="connection" role="status">Se conectează…</div></header>
-<section class="heading"><div><p class="eyebrow">CAPITOLUL I / VALEA ECOURILOR</p><h1>Chatul scrie legenda.</h1><p>Fiecare idee lasă o urmă în lume.</p></div><div class="counter"><strong id="revision">00</strong><span>CREAȚII</span></div></section>
-<div class="layout"><section class="map" aria-label="Harta lumii"><div class="grid"></div><div class="river"></div><div class="road"></div><span class="place forest">♠<small>PĂDUREA VECHE</small></span><span class="place village">⌂<small>SATUL ECOURILOR</small></span><span class="place tower">♜<small>TURNUL DE VEGHE</small></span><span class="north">N ↑</span><div id="markers"></div><div class="map-label">VALEA ECOURILOR <span>HARTĂ VIE / 01</span></div></section>
-<aside><p class="eyebrow">ULTIMA CREAȚIE</p><div id="latest"><h2>Lumea așteaptă.</h2><p>Scrie o comandă !forge în chat.</p></div><div class="timeline"><p class="eyebrow">FIRUL POVEȘTII</p><ol id="history" aria-live="polite"></ol></div></aside></div>
-<footer><span><b>!forge</b> npc · item · event · danger</span><span id="mode"></span></footer></main><script src="/app.js"></script></body></html>
-

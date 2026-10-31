@@ -10,3 +10,14 @@ node_modules/
 dist/
 coverage/
 *.log
+node_modules/
+.env
+.env.*
+!.env.example
+*.zip
+*.before-vote-ui
+dist/
+coverage/
+*.log
+
+*.bak
